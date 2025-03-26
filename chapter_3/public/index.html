@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Neon Bitcoin Price Tracker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-..." crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.12" integrity="sha384-..." crossorigin="anonymous"></script>
+
+    <style>
+        /* Overall body & background design */
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #141414;
+            color: #fff;
+            overflow: hidden;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        body.light {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        /* Neon glow effects */
+        .neon-text {
+            font-family: 'Arial', sans-serif;
+            color: #00ff99;
+            text-shadow: 0 0 5px #00ff99, 0 0 10px #00ff99, 0 0 15px #00ff99, 0 0 20px #00ff99;
+        }
+
+        .neon-price-up {
+            color: #39ff14;
+            text-shadow: 0 0 15px #39ff14, 0 0 20px #39ff14;
+        }
+
+        .neon-price-down {
+            color: #ff3333;
+            text-shadow: 0 0 15px #ff3333, 0 0 20px #ff3333;
+        }
+
+        .container {
+            text-align: center;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: #ff66ff;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-top: 20px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .btn-toggle-theme {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.5rem;
+            background-color: #ff66ff;
+            border-radius: 50%;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-toggle-theme:hover {
+            background-color: #ff00ff;
+        }
+
+        .sparkline {
+            margin-top: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .alert-custom {
+            display: none;
+            animation: fadeInOut 3s ease;
+        }
+
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .btn-simulate {
+            background-color: #ff5733;
+            color: white;
+            margin-top: 20px;
+        }
+
+        .btn-simulate:hover {
+            background-color: #ff3333;
+        }
+    </style>
+</head>
+
+<body class="dark">
+    <div class="container">
+        <button id="themeToggle" class="btn btn-light btn-toggle-theme">🌙</button>
+        <h1 class="neon-text">🚀 Neon Bitcoin Price Tracker</h1>
+        <h2 id="price" hx-get="/get-price" hx-trigger="every 5s" hx-swap="outerHTML">Loading...</h2>
+
+        <canvas id="sparkline" class="sparkline"></canvas>
+
+        <button id="simulateBtn" class="btn btn-warning btn-simulate">Simulate Price Movement</button>
+
+        <div class="alert alert-info alert-custom" id="notification">
+            <strong>Price Alert!</strong> Bitcoin price has reached your target!
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('sparkline').getContext('2d');
+        let priceHistory = [];
+        let simulated = false;
+        let lastPrice = null;
+        let alertPrice = null;
+
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'BTC Price',
+                    data: priceHistory,
+                    borderColor: '#ff5733',
+                    fill: false,
+                    borderWidth: 2,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        ticks: {
+                            callback: function (value) {
+                                return '$' + value.toFixed(2);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Toggle Dark/Light Theme
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            const body = document.body;
+            if (body.classList.contains('dark')) {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                document.getElementById('themeToggle').textContent = '🌞';
+            } else {
+                body.classList.remove('light');
+                body.classList.add('dark');
+                document.getElementById('themeToggle').textContent = '🌙';
+            }
+        });
+
+        // Fetch Bitcoin Price from CoinGecko API
+        async function fetchBitcoinPrice() {
+            try {
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+                const data = await response.json();
+                return data.bitcoin.usd;
+            } catch (error) {
+                console.error('Error fetching Bitcoin price:', error);
+            }
+        }
+
+        // Simulate Price Movement on button click
+        document.getElementById('simulateBtn').addEventListener('click', () => {
+            simulated = !simulated;
+            document.getElementById('simulateBtn').textContent = simulated ? 'Simulating Price...' : 'Simulate Price Movement';
+            if (simulated) {
+                setInterval(async () => {
+                    const simulatedPrice = Math.random() * 100 + 50000; // Random price movement
+                    updatePrice(simulatedPrice);
+                }, 2000);
+            }
+        });
+
+        // Update the Bitcoin price on the page and chart
+        async function updatePrice(price) {
+            const priceChange = price - priceHistory[priceHistory.length - 1];
+            priceHistory.push(price);
+            if (priceHistory.length > 30) {
+                priceHistory.shift();
+            }
+
+            const direction = priceChange > 0 ? 'up' : 'down';
+            const arrow = direction === 'up' ? '↑' : '↓';
+            const className = direction === 'up' ? 'neon-price-up' : 'neon-price-down';
+
+            // Display the current price with animation
+            const priceElement = document.getElementById('price');
+            priceElement.innerHTML = `${arrow} $${price.toFixed(2)}`;
+            priceElement.classList.remove('neon-price-up', 'neon-price-down');
+            priceElement.classList.add(className);
+
+            chart.data.datasets[0].data = priceHistory;
+            chart.update();
+
+            // Trigger price alert if it hits user-set target
+            if (alertPrice && price >= alertPrice) {
+                document.getElementById('notification').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('notification').style.display = 'none';
+                }, 3000);
+            }
+
+            lastPrice = price;
+        }
+
+        // Periodically fetch Bitcoin price using async/await
+        async function fetchAndUpdatePrice() {
+            setInterval(async () => {
+                const currentPrice = await fetchBitcoinPrice();
+                updatePrice(currentPrice);
+            }, 5000);
+        }
+
+        // Start periodic price updates
+        fetchAndUpdatePrice();
+    </script>
+</body>
+
+</html>
