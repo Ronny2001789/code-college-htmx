@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chicken Palace - Order Online</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #e4002b;
+            --secondary: #f8b517;
+            --dark: #1a1a1a;
+            --light: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: var(--light);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        nav ul li a:hover {
+            color: var(--secondary);
+        }
+        
+        .hero {
+            background: url('https://images.unsplash.com/photo-1559847844-5315695dadae') no-repeat center center/cover;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            color: var(--light);
+            max-width: 600px;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: var(--dark);
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .menu {
+            padding: 4rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            display: inline-block;
+            padding: 0 2rem 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: fadeIn 1s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+        
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        
+        .menu-item {
+            background-color: var(--light);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        .menu-item-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .menu-item-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .menu-item:hover .menu-item-img img {
+            transform: scale(1.1);
+        }
+        
+        .menu-item-content {
+            padding: 1.5rem;
+        }
+        
+        .menu-item-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        
+        .menu-item-content p {
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .menu-item-content .price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .add-to-cart {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .quantity {
+            display: flex;
+            align-items: center;
+        }
+        
+        .quantity button {
+            background-color: #f0f0f0;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .quantity span {
+            margin: 0 1rem;
+            font-weight: bold;
+        }
+        
+        .add-btn {
+            background-color: var(--primary);
+            color: var(--light);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .add-btn:hover {
+            background-color: var(--secondary);
+            color: var(--dark);
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: var(--light);
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .social-links {
+            margin-bottom: 1.5rem;
+        }
+        
+        .social-links a {
+            color: var(--light);
+            margin: 0 0.5rem;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            color: var(--secondary);
+        }
+        
+        .copyright {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .creator {
+            color: #ccc;
+            font-size: 0.8rem;
+        }
+
+        .pending-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .order-pending {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 400px;
+        }
+
+        .order-pending h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .order-pending p {
+            margin-bottom: 0.5rem;
+        }
+
+        .order-pending .status {
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        .order-pending .time {
+            font-weight: bold;
+        }
+
+        .order-pending button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+            cursor: pointer;
+        }
+        
+        /* Cart Sidebar */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background-color: var(--light);
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            transition: right 0.3s ease;
+            z-index: 1000;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        
+        .cart-sidebar.active {
+            right: 0;
+        }
+        
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .cart-header h3 {
+            font-size: 1.5rem;
+            color: var(--dark);
+        }
+        
+        .close-cart {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .cart-items {
+            margin-bottom: 2rem;
+        }
+        
+        .cart-item {
+            display: flex;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .cart-item-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-right: 1rem;
+        }
+        
+        .cart-item-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .cart-item-details {
+            flex: 1;
+        }
+        
+        .cart-item-details h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .cart-item-details .price {
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .remove-item {
+            background: none;
+            border: none;
+            color: #ff4d4d;
+            cursor: pointer;
+            margin-left: 1rem;
+        }
+        
+        .cart-total {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            text-align: right;
+        }
+        
+        .checkout-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--primary);
+            color: var(--light);
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .checkout-btn:hover {
+            background-color: var(--secondary);
+            color: var(--dark);
+        }
+        
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: var(--secondary);
+            color: var(--dark);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+            
+            .menu-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">Chicken Palace</div>
+                <nav>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Menu</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li>
+                            <div class="cart-icon">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span class="cart-count">0</span>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Finger Lickin' Good Chicken</h1>
+                <p>Order your favorite crispy chicken meals online and get them delivered to your doorstep in no time!</p>
+                <a href="#" class="btn">Order Now</a>
+            </div>
+        </div>
+    </section>
+    
+    <section class="menu">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Menu</h2>
+            </div>
+            
+            <div class="menu-grid">
+                <!-- Menu Item 1 -->
+                <div class="menu-item">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1559847844-5315695dadae" alt="Fried Chicken Bucket">
+                    </div>
+                    <div class="menu-item-content">
+                        <h3>Chicken Bucket</h3>
+                        <p>8 pieces of our signature crispy fried chicken with your choice of sides.</p>
+                        <span class="price">$12.99</span>
+                        <div class="add-to-cart">
+                            <div class="quantity">
+                                <button class="minus">-</button>
+                                <span>1</span>
+                                <button class="plus">+</button>
+                            </div>
+                            <button class="add-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Menu Item 2 -->
+                <div class="menu-item">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd" alt="Chicken Burger">
+                    </div>
+                    <div class="menu-item-content">
+                        <h3>Chicken Burger</h3>
+                        <p>Crispy chicken fillet with lettuce, tomato, and our special sauce in a soft bun.</p>
+                        <span class="price">$6.99</span>
+                        <div class="add-to-cart">
+                            <div class="quantity">
+                                <button class="minus">-</button>
+                                <span>1</span>
+                                <button class="plus">+</button>
+                            </div>
+                            <button class="add-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Menu Item 3 -->
+                <div class="menu-item">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1603360946369-dc9bb6258143" alt="Chicken Wings">
+                    </div>
+                    <div class="menu-item-content">
+                        <h3>Spicy Wings</h3>
+                        <p>10 pieces of our famous spicy chicken wings with your choice of dipping sauce.</p>
+                        <span class="price">$9.99</span>
+                        <div class="add-to-cart">
+                            <div class="quantity">
+                                <button class="minus">-</button>
+                                <span>1</span>
+                                <button class="plus">+</button>
+                            </div>
+                            <button class="add-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Menu Item 4 -->
+                <div class="menu-item">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1610440042657-612c34d95e9f" alt="Chicken Sandwich">
+                    </div>
+                    <div class="menu-item-content">
+                        <h3>Chicken Sandwich</h3>
+                        <p>Grilled chicken breast with avocado, lettuce, and honey mustard on artisan bread.</p>
+                        <span class="price">$7.99</span>
+                        <div class="add-to-cart">
+                            <div class="quantity">
+                                <button class="minus">-</button>
+                                <span>1</span>
+                                <button class="plus">+</button>
+                            </div>
+                            <button class="add-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Menu Item 5 -->
+                <div class="menu-item">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950" alt="Chicken Tenders">
+                    </div>
+                    <div class="menu-item-content">
+                        <h3>Chicken Tenders</h3>
+                        <p>6 pieces of juicy chicken tenders with your choice of dipping sauce.</p>
+                        <span class="price">$8.99</span>
+                        <div class="add-to-cart">
+                            <div class="quantity">
+                                <button class="minus">-</button>
+                                <span>1</span>
+                                <button class="plus">+</button>
+                            </div>
+                            <button class="add-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Menu Item 6 -->
+                <div class="menu-item">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1518492104633-130d0cc84637" alt="Chicken Combo">
+                    </div>
+                    <div class="menu-item-content">
+                        <h3>Family Combo</h3>
+                        <p>12 pieces of chicken, 4 sides, and 4 drinks - perfect for the whole family!</p>
+                        <span class="price">$24.99</span>
+                        <div class="add-to-cart">
+                            <div class="quantity">
+                                <button class="minus">-</button>
+                                <span>1</span>
+                                <button class="plus">+</button>
+                            </div>
+                            <button class="add-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="menu">
+        <div class="container">
+            <div class="section-title">
+                <h2>Drinks</h2>
+            </div>
+            
+            <div class="menu-grid">
+                <!-- Drink 1 -->
+                <div class="menu-item">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1624552184280-9e9631bbeee9" alt="Soda">
+                    </div>
+                    <div class="menu-item-content">
+                        <h3>Fountain Soda</h3>
+                        <p>Refreshing soda with free refills. Choose from Coke, Sprite or Fanta.</p>
+                        <span class="price">$2.99</span>
+                        <div class="add-to-cart">
+                            <div class="quantity">
+                                <button class="minus">-</button>
+                                <span>1</span>
+                                <button class="plus">+</button>
+                            </div>
+                            <button class="add-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Drink 2 -->
+                <div class="menu-item">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8" alt="Iced Tea">
+                    </div>
+                    <div class="menu-item-content">
+                        <h3>Iced Tea</h3>
+                        <p>Freshly brewed iced tea, sweetened or unsweetened.</p>
+                        <span class="price">$2.49</span>
+                        <div class="add-to-cart">
+                            <div class="quantity">
+                                <button class="minus">-</button>
+                                <span>1</span>
+                                <button class="plus">+</button>
+                            </div>
+                            <button class="add-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Drink 3 -->
+                <div class="menu-item">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd" alt="Lemonade">
+                    </div>
+                    <div class="menu-item-content">
+                        <h3>Lemonade</h3>
+                        <p>Homemade lemonade, perfectly sweet and tart.</p>
+                        <span class="price">$2.99</span>
+                        <div class="add-to-cart">
+                            <div class="quantity">
+                                <button class="minus">-</button>
+                                <span>1</span>
+                                <button class="plus">+</button>
+                            </div>
+                            <button class="add-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="menu">
+        <div class="container">
+            <div class="section-title">
+                <h2>Sides</h2>
+            </div>
+            
+            <div class="menu-grid">
+                <!-- Side 1 -->
+                <div class="menu-item">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1541592106381-b31e9677c0e5" alt="French Fries">
+                    </div>
+                    <div class="menu-item-content">
+                        <h3>French Fries</h3>
+                        <p>Crispy golden fries with just the right amount of salt.</p>
+                        <span class="price">$3.99</span>
+                        <div class="add-to-cart">
+                            <div class="quantity">
+                                <button class="minus">-</button>
+                                <span>1</span>
+                                <button class="plus">+</button>
+                            </div>
+                            <button class="add-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Side 2 -->
+                <div class="menu-item">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950" alt="Coleslaw">
+                    </div>
+                    <div class="menu-item-content">
+                        <h3>Coleslaw</h3>
+                        <p>Creamy, crunchy coleslaw made fresh daily.</p>
+                        <span class="price">$2.99</span>
+                        <div class="add-to-cart">
+                            <div class="quantity">
+                                <button class="minus">-</button>
+                                <span>1</span>
+                                <button class="plus">+</button>
+                            </div>
+                            <button class="add-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Side 3 -->
+                <div class="menu-item">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1544025162-d76694265947" alt="Mashed Potatoes">
+                    </div>
+                    <div class="menu-item-content">
+                        <h3>Mashed Potatoes</h3>
+                        <p>Creamy mashed potatoes with gravy.</p>
+                        <span class="price">$3.49</span>
+                        <div class="add-to-cart">
+                            <div class="quantity">
+                                <button class="minus">-</button>
+                                <span>1</span>
+                                <button class="plus">+</button>
+                            </div>
+                            <button class="add-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="menu">
+        <div class="container">
+            <div class="section-title">
+                <h2>Desserts</h2>
+            </div>
+            
+            <div class="menu-grid">
+                <!-- Dessert 1 -->
+                <div class="menu-item">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587" alt="Chocolate Cake">
+                    </div>
+                    <div class="menu-item-content">
+                        <h3>Chocolate Cake</h3>
+                        <p>Rich, moist chocolate cake with fudge icing.</p>
+                        <span class="price">$5.99</span>
+                        <div class="add-to-cart">
+                            <div class="quantity">
+                                <button class="minus">-</button>
+                                <span>1</span>
+                                <button class="plus">+</button>
+                            </div>
+                            <button class="add-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Dessert 2 -->
+                <div class="menu-item">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1560008581-09826d1de69e" alt="Ice Cream">
+                    </div>
+                    <div class="menu-item-content">
+                        <h3>Ice Cream</h3>
+                        <p>Vanilla or chocolate ice cream with toppings.</p>
+                        <span class="price">$4.49</span>
+                        <div class="add-to-cart">
+                            <div class="quantity">
+                                <button class="minus">-</button>
+                                <span>1</span>
+                                <button class="plus">+</button>
+                            </div>
+                            <button class="add-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dessert 3 -->
+                <div class="menu-item">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1562007908-859b4ba9a1a2" alt="Apple Pie">
+                    </div>
+                    <div class="menu-item-content">
+                        <h3>Apple Pie</h3>
+                        <p>Warm apple pie with cinnamon and vanilla ice cream.</p>
+                        <span class="price">$6.49</span>
+                        <div class="add-to-cart">
+                            <div class="quantity">
+                                <button class="minus">-</button>
+                                <span>1</span>
+                                <button class="plus">+</button>
+                            </div>
+                            <button class="add-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dessert 4 -->
+                
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="menu">
+        <div class="container">
+            <div class="section-title">
+                
+            </div>
+            
+            <div class="menu-grid">
+                <!-- Display Chocolate Mousse image -->
+                
+            </div>
+        </div>
+    </section>
+    
+    <div class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <button class="close-cart">&times;</button>
+        </div>
+        <div class="cart-items">
+            <!-- Cart items will be added here dynamically -->
+        </div>
+        <div class="cart-total">
+            Total: $<span class="total-amount">0.00</span>
+        </div>
+        <button class="checkout-btn">Proceed to Checkout</button>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">Chicken Palace</div>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+                <p class="copyright">&copy; 2025 Chicken Palace. All Rights Reserved.</p>
+                <p class="creator">Website created by Ronny Mputla</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Cart functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const cartIcon = document.querySelector('.cart-icon');
+            const cartSidebar = document.querySelector('.cart-sidebar');
+            const closeCart = document.querySelector('.close-cart');
+            const addToCartBtns = document.querySelectorAll('.add-btn');
+            const cartItemsContainer = document.querySelector('.cart-items');
+            const cartTotal = document.querySelector('.total-amount');
+            const cartCount = document.querySelector('.cart-count');
+            
+            let cart = [];
+            
+            // Toggle cart sidebar
+            cartIcon.addEventListener('click', function() {
+                cartSidebar.classList.add('active');
+            });
+            
+            closeCart.addEventListener('click', function() {
+                cartSidebar.classList.remove('active');
+            });
+            
+            // Add to cart functionality
+            addToCartBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const menuItem = this.closest('.menu-item');
+                    const itemName = menuItem.querySelector('h3').textContent;
+                    const itemPrice = parseFloat(menuItem.querySelector('.price').textContent.replace('$', ''));
+                    const itemQuantity = parseInt(menuItem.querySelector('.quantity span').textContent);
+                    const itemImg = menuItem.querySelector('.menu-item-img img').src;
+                    
+                    // Check if item already in cart
+                    const existingItem = cart.find(item => item.name === itemName);
+                    
+                    if (existingItem) {
+                        existingItem.quantity += itemQuantity;
+                    } else {
+                        cart.push({
+                            name: itemName,
+                            price: itemPrice,
+                            quantity: itemQuantity,
+                            img: itemImg
+                        });
+                    }
+                    
+                    updateCart();
+                    cartSidebar.classList.add('active');
+                });
+            });
+            
+            // Update cart
+            function updateCart() {
+                cartItemsContainer.innerHTML = '';
+                let total = 0;
+                let count = 0;
+                
+                cart.forEach(item => {
+                    const cartItemElement = document.createElement('div');
+                    cartItemElement.classList.add('cart-item');
+                    cartItemElement.innerHTML = `
+                        <div class="cart-item-img">
+                            <img src="${item.img}" alt="${item.name}">
+                        </div>
+                        <div class="cart-item-details">
+                            <h4>${item.name}</h4>
+                            <span class="price">$${(item.price * item.quantity).toFixed(2)}</span>
+                            <div class="quantity">
+                                <button class="minus">-</button>
+                                <span>${item.quantity}</span>
+                                <button class="plus">+</button>
+                            </div>
+                        </div>
+                        <button class="remove-item">&times;</button>
+                    `;
+                    
+                    cartItemsContainer.appendChild(cartItemElement);
+                    
+                    // Add event listeners to quantity buttons
+                    const minusBtn = cartItemElement.querySelector('.minus');
+                    const plusBtn = cartItemElement.querySelector('.plus');
+                    const quantitySpan = cartItemElement.querySelector('.quantity span');
+                    const removeBtn = cartItemElement.querySelector('.remove-item');
+                    
+                    minusBtn.addEventListener('click', function() {
+                        const itemIndex = cart.findIndex(cartItem => cartItem.name === item.name);
+                        if (cart[itemIndex].quantity > 1) {
+                            cart[itemIndex].quantity--;
+                            quantitySpan.textContent = cart[itemIndex].quantity;
+                            updateCart();
+                        }
+                    });
+                    
+                    plusBtn.addEventListener('click', function() {
+                        const itemIndex = cart.findIndex(cartItem => cartItem.name === item.name);
+                        cart[itemIndex].quantity++;
+                        quantitySpan.textContent = cart[itemIndex].quantity;
+                        updateCart();
+                    });
+                    
+                    removeBtn.addEventListener('click', function() {
+                        cart = cart.filter(cartItem => cartItem.name !== item.name);
+                        updateCart();
+                    });
+                    
+                    total += item.price * item.quantity;
+                    count += item.quantity;
+                });
+                
+                cartTotal.textContent = total.toFixed(2);
+                cartCount.textContent = count;
+            }
+            
+            // Quantity buttons in menu items
+            document.querySelectorAll('.quantity button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const quantitySpan = this.parentElement.querySelector('span');
+                    let quantity = parseInt(quantitySpan.textContent);
+                    
+                    if (this.classList.contains('minus') && quantity > 1) {
+                        quantity--;
+                    } else if (this.classList.contains('plus')) {
+                        quantity++;
+                    }
+                    
+                    quantitySpan.textContent = quantity;
+                });
+            });
+            
+            // Checkout button
+            document.querySelector('.checkout-btn').addEventListener('click', function() {
+                if (cart.length > 0) {
+                    // Show order pending status
+                    const orderNumber = Math.floor(Math.random() * 90000) + 10000;
+                    const pendingHTML = `
+                        <div class="order-pending">
+                            <h3>Order #${orderNumber} Received</h3>
+                            <div class="order-status">
+                                <div class="status-item preparing active">
+                                    <i class="fas fa-utensils"></i>
+                                    <p>Preparing</p>
+                                </div>
+                                <div class="status-item cooking">
+                                    <i class="fas fa-fire"></i>
+                                    <p>Cooking</p>
+                                </div>
+                                <div class="status-item ready">
+                                    <i class="fas fa-check-circle"></i>
+                                    <p>Ready</p>
+                                </div>
+                            </div>
+                            <p class="status-message">We're preparing your delicious order!</p>
+                            <button class="close-pending">OK</button>
+                        </div>
+                    `;
+                    
+                    const pendingDiv = document.createElement('div');
+                    pendingDiv.className = 'pending-overlay';
+                    pendingDiv.innerHTML = pendingHTML;
+                    document.body.appendChild(pendingDiv);
+                    
+                    // Animate status progression
+                    const statusItems = pendingDiv.querySelectorAll('.status-item');
+                    const statusMessage = pendingDiv.querySelector('.status-message');
+                    const messages = [
+                        "We're preparing your delicious order!",
+                        "Our chefs are cooking your food now!",
+                        "Your order is ready for pickup!"
+                    ];
+                    
+                    let currentStatus = 0;
+                    const statusInterval = setInterval(() => {
+                        if (currentStatus < statusItems.length - 1) {
+                            statusItems[currentStatus].classList.remove('active');
+                            currentStatus++;
+                            statusItems[currentStatus].classList.add('active');
+                            statusMessage.textContent = messages[currentStatus];
+                        } else {
+                            clearInterval(statusInterval);
+                        }
+                    }, 3000);
+                    
+                    // Close button functionality
+                    pendingDiv.querySelector('.close-pending').addEventListener('click', function() {
+                        clearInterval(statusInterval);
+                        document.body.removeChild(pendingDiv);
+                        cart = [];
+                        updateCart();
+                        cartSidebar.classList.remove('active');
+                    });
+                } else {
+                    alert('Your cart is empty!');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

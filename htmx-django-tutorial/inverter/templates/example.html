@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neon Profile Card</title>
+
+  <!-- HTMX -->
+  <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Neon Styling -->
+  <style>
+    body {
+      background: radial-gradient(circle, rgba(13, 13, 13, 1) 0%, rgba(22, 22, 22, 1) 35%, rgba(0, 0, 0, 1) 100%);
+      color: #00ffff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding-top: 50px;
+      transition: background-color 0.3s ease;
+    }
+  
+    .card {
+      background-color: #121212;
+      border: 2px solid #00e5ff;
+      box-shadow: 0 0 30px rgba(0, 229, 255, 0.5);
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      color: #e0f7ff;
+    }
+  
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 40px rgba(0, 229, 255, 0.7);
+    }
+  
+    .form-control,
+    textarea {
+      background-color: #1e1e1e;
+      border: 1px solid #00e5ff;
+      color: #e0f7ff;
+    }
+  
+    .form-control::placeholder,
+    textarea::placeholder {
+      color: #9befff;
+    }
+  
+    .form-control:focus,
+    textarea:focus {
+      box-shadow: 0 0 15px #00e5ff;
+      outline: none;
+    }
+  
+    .form-label {
+      color: #0ff;
+      font-weight: 600;
+    }
+  
+    .btn-primary {
+      background-color: #00e5ff;
+      border: none;
+      color: #000;
+      font-weight: bold;
+      box-shadow: 0 0 15px #00e5ff;
+    }
+  
+    .btn-primary:hover {
+      background-color: #00aaff;
+      box-shadow: 0 0 20px #00e5ff;
+    }
+
+    .btn-secondary {
+      background-color: #2e2e2e;
+      border: none;
+      color: #00ffff;
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+    }
+  
+    .btn-secondary:hover {
+      background-color: #3a3a3a;
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.7);
+    }
+  
+    .fade-in {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+  
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container d-flex justify-content-center">
+    <div class="card fade-in" style="width: 22rem;" hx-target="this" hx-swap="outerHTML">
+      <div class="card-body text-center">
+        <h5 class="card-title">Greg Lim</h5>
+        <p class="card-text">
+          Follower of Christ | Author of Best-selling Amazon Tech Books and Creator of Coding Courses
+        </p>
+        <button class="btn btn-primary mt-3" hx-get="/user/1/edit" hx-target=".card" hx-swap="outerHTML">
+          Edit Profile
+        </button>
+        
+      </div>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('htmx:configRequest', function(event) {
+        // Get the CSRF token from the DOM
+        var csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        
+        // Add CSRF token to HTMX request headers
+        event.detail.headers['X-CSRFToken'] = csrfToken;
+    });
+</script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

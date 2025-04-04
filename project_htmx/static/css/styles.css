@@ -1,0 +1,30 @@
+body {
+    background-color: yellow;
+    font-family: Arial, sans-serif;
+    color: #121c72;
+}
+
+h2 {
+    color: #00ffd0;
+}
+
+button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: grey;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}

@@ -1,0 +1,68 @@
+<!-- notes.html (Enhanced with More Decoration) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes</title>
+    {% load static %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 800px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-weight: bold;
+            color: #343a40;
+        }
+        .list-group-item {
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+        .list-group-item:hover {
+            background-color: #f1f1f1;
+            transform: scale(1.02);
+        }
+        .btn {
+            transition: 0.3s;
+        }
+        .btn:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container d-flex justify-content-between">
+            <a class="navbar-brand" href="#">📝 My Notes</a>
+            <a class="btn btn-success" href="{% url 'post_create' %}">➕ Add New Notes</a>
+        </div>
+    </nav>
+    
+    <div class="container mt-5 p-4">
+        <h1 class="text-center mb-4">📌 Your Notes</h1>
+        <div class="list-group">
+            {% for post in posts %}
+                <div class="list-group-item d-flex justify-content-between align-items-center shadow-sm p-3 mb-2">
+                    <span class="fw-bold">🗒️ {{ post.title }}</span>
+                    <span>
+                        <a class="btn btn-warning btn-sm" href="{% url 'post_update' post.id %}">✏️ Edit</a>
+                        <a class="btn btn-danger btn-sm" href="{% url 'post_delete' post.id %}">❌ Delete</a>
+                    </span>
+                </div>
+            {% empty %}
+                <p class="text-muted text-center">No notes available. Start by adding a new one!</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
